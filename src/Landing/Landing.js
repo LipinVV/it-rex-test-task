@@ -35,6 +35,12 @@ export const Landing = () => {
         setPage(prevState => prevState - 1);
     }
 
+    useEffect(() => {
+        if(currentItems < PAGE_SIZE) {
+            setPage(1)
+        }
+    }, [currentItems])
+
     const inputFilterHandler = (inputValue, allUsers) => {
         const filteredArray = allUsers.filter((user) => {
             if (inputValue === '') {
@@ -46,6 +52,8 @@ export const Landing = () => {
         })
         setFilteredUsers(filteredArray);
     }
+
+
 
     useEffect(() => {
         getAllData()
@@ -113,11 +121,22 @@ export const Landing = () => {
         })
     }
 
-    const selectHandler = (value) => {
+    const states = users.map(user => user.adress.state)
 
+    const [data, setData] = useState([])
+    const selectHandler = (value, array) => {
+
+        const filtteredArray = array.filter(user =>{
+            return user.adress.state === value
+        })
+        setFilteredUsers(filtteredArray)
     }
 
     console.log('=>', currentItems)
+    const numberGenerator = Math.round(filteredUsers.length / 20);
+
+    const arrayWithPageNumbers = Array(numberGenerator).fill().map((element, index) => index + 1);
+
     return (
         <div className='wrapper'>
             <section className='users__filter'>
@@ -130,14 +149,15 @@ export const Landing = () => {
                     />
                 </label>
                 <select
-                    onChange={(evt) => selectHandler(evt.target.value)}
+                    value={data[0]}
+                    onChange={(evt) => selectHandler(evt.target.value, users)}
                 >
-                    {currentItems.map((user, index) => {
+                    {states.map((user, index) => {
                         return (
                             <option
                                 className='users__user'
                                 key={uudv4()}>
-                                {user.adress.state}
+                                {user}
                             </option>
                         )
                     })}
@@ -152,13 +172,13 @@ export const Landing = () => {
                                     checked={sortedUsers.includes(option)}
                                     value={option}
                                     type='checkbox'
-                                    onChange={(evt) => filterByAmount(evt.target.value, users)}/>
+                                    onChange={(evt) => filterByAmount(evt.target.value, filteredUsers)}/>
                                 {option}
                             </label>
                         )
                     })}
                 < /div>
-                {Boolean(currentItems.length > 0) && currentItems.slice(0, PAGE_SIZE).map((user, index) => {
+                {Boolean(currentItems.length > 0) && currentItems.map((user, index) => {
                     let showStatus = false
                     if (openedCard.includes(index)) {
                         showStatus = true;
@@ -196,6 +216,18 @@ export const Landing = () => {
                 <div className='pagination-buttons'>
                     <button disabled={page === 1} className='pagination-button'
                             onClick={handleClickDecrease}>{'Previous page'}</button>
+                    {Boolean(arrayWithPageNumbers.length > 0) && arrayWithPageNumbers.map(value => {
+                        return (
+                                <button
+                                    key={uudv4()}
+                                    onClick={() => setPage(value)}
+                                    disabled={page === value}
+                                >
+                                    {value}
+                                </button>
+                        )
+                    })
+                    }
                     <button disabled={indexOfLastItem === users.length} className='pagination-button'
                             onClick={handleClickIncrease}>{'Next page'}</button>
                 </div>
