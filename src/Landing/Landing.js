@@ -3,14 +3,15 @@ import React, {useEffect, useState} from "react";
 import {fetchCharacters} from "../App";
 import {v4 as uudv4} from 'uuid';
 
-export const Landing = ({pageSize}) => {
+export const Landing = () => {
 
     const [users, setUsers] = useState([]);
     const [filteredUsers, setFilteredUsers] = useState([]);
+    const filterOptions = ['id', 'firstName', 'lastName', 'email', 'phone', 'state'];
 
     const getAllData = async () => {
         try {
-            const allWordsFromServer = await fetchCharacters(pageSize)
+            const allWordsFromServer = await fetchCharacters()
             setUsers(allWordsFromServer)
             setFilteredUsers(allWordsFromServer)
         } catch (error) {
@@ -18,79 +19,77 @@ export const Landing = ({pageSize}) => {
         }
     }
 
+    const [page, setPage] = useState(1);
+    const PAGE_SIZE = 20;
+
+    const indexOfLastItem = page * PAGE_SIZE;
+    const indexOfFirstItem = indexOfLastItem - PAGE_SIZE;
+
+    const currentItems = filteredUsers.slice(indexOfFirstItem, indexOfLastItem);
+
+    function handleClickIncrease() {
+        setPage(prevState => prevState + 1);
+    }
+
+    function handleClickDecrease() {
+        setPage(prevState => prevState - 1);
+    }
+
     const inputFilterHandler = (inputValue, allUsers) => {
         const filteredArray = allUsers.filter((user) => {
-            console.log('user', user)
             if (inputValue === '') {
                 return user;
             }
-            if (user.firstName.toLowerCase().includes(inputValue.toLowerCase()) ||
-                user.lastName.toLowerCase().includes(inputValue.toLowerCase())) {
+            if (user.firstName.toLowerCase().includes(inputValue.toLowerCase())) {
                 return user;
             }
         })
-        setFilteredUsers(filteredArray)
+        setFilteredUsers(filteredArray);
     }
-    const [filterOptions, setFilterOptions] = useState(['id', 'firstName', 'lastName', 'email', 'phone', 'state'])
 
     useEffect(() => {
         getAllData()
-    }, [pageSize])
-
-    const [openedCard, setOpenedCard] = useState([]);
-    const popUpHandler = index => {
-        setOpenedCard((prevState) => {
-            if (prevState.includes(index)) {
-                setStatus(false)
-                return prevState.filter(value => value !== index)
-            } else {
-                setStatus(true)
-                return [...prevState, index]
-            }
-        })
-    }
-    const [status, setStatus] = useState(false)
+    }, [])
 
 
-    const [one, setOne] = useState([])
-    const [add, setAdd] = useState([])
+    const [sortedUsers, setSortedUsers] = useState([]);
     const filterByAmount = (value, array) => {
-        setAdd((prevState) => {
+        setSortedUsers((prevState) => {
             if (prevState.includes(value)) {
-                return prevState.filter(element => element !== value)
+                return prevState.filter(element => element !== value);
             } else {
-                return [...prevState, value]
+                return [...prevState, value];
             }
         })
         if (Boolean(value === 'firstName' || value === 'lastName' || value === 'email' || value === 'phone')) {
             let sortingArray;
-            if (add.includes('firstName') || add.includes('lastName') || add.includes('email') || add.includes('phone')) {
+            if (sortedUsers.includes('firstName') || sortedUsers.includes('lastName') || sortedUsers.includes('email') || sortedUsers.includes('phone')) {
                 sortingArray = array.sort((productA, productB) => {
-                    return productA[value].localeCompare(productB[value])
+                    return productA[value].localeCompare(productB[value]);
                 })
             } else {
                 sortingArray = array.sort((productA, productB) => {
-                    return productB[value].localeCompare(productA[value])
+                    return productB[value].localeCompare(productA[value]);
                 })
             }
-            setFilteredUsers(sortingArray)
+            setFilteredUsers(sortingArray);
         }
         if (Boolean(value === 'id' || value === 'phone')) {
             let sortingArray;
-            if (add.includes('id')) {
+            if (sortedUsers.includes('id')) {
                 sortingArray = array.sort((productA, productB) => {
-                    return productA[value] - productB[value]
+                    return productA[value] - productB[value];
                 })
             } else {
                 sortingArray = array.sort((productA, productB) => {
-                    return productB[value] - productA[value]
+                    return productB[value] - productA[value];
                 })
             }
-            setFilteredUsers(sortingArray)
+            setFilteredUsers(sortingArray);
         }
-        if(Boolean(value === 'state')) {
+        if (Boolean(value === 'state')) {
             let sortingArray;
-            if (add.includes('state')) {
+            if (sortedUsers.includes('state')) {
                 sortingArray = array.sort((productA, productB) => {
                     return productA.adress.state.localeCompare(productB.adress.state)
                 })
@@ -99,45 +98,75 @@ export const Landing = ({pageSize}) => {
                     return productB.adress.state.localeCompare(productA.adress.state)
                 })
             }
-            setFilteredUsers(sortingArray)
+            setFilteredUsers(sortingArray);
         }
+    }
+
+    const [openedCard, setOpenedCard] = useState([]);
+    const popUpHandler = index => {
+        setOpenedCard((prevState) => {
+            if (prevState.includes(index)) {
+                return prevState.filter(value => value !== index);
+            } else {
+                return [...prevState.slice(0, -1), index];
+            }
+        })
+    }
+
+    const selectHandler = (value) => {
 
     }
-    console.log('add', add)
-    console.log('filteredUsers', filteredUsers)
+
+    console.log('=>', currentItems)
     return (
-        <div>
-            <div>
-                <label className='widget__filter-label'>
+        <div className='wrapper'>
+            <section className='users__filter'>
+                <label className='users__filter-label'>
                     <input
-                        className='widget__filter-input'
+                        className='users__filter-input'
                         type='text'
                         placeholder='type a name...'
                         onChange={(evt) => inputFilterHandler(evt.target.value, users)}
                     />
                 </label>
-            </div>
+                <select
+                    onChange={(evt) => selectHandler(evt.target.value)}
+                >
+                    {currentItems.map((user, index) => {
+                        return (
+                            <option
+                                className='users__user'
+                                key={uudv4()}>
+                                {user.adress.state}
+                            </option>
+                        )
+                    })}
+                </select>
+            </section>
             <section className='users'>
                 <div className='users__filter-options'>
                     {filterOptions.map(option => {
                         return (
-                            <label key={uudv4()}><input checked={add.includes(option)} value={option} type='checkbox'
-                                                        onChange={(evt) => filterByAmount(evt.target.value, users)}/>{option}
+                            <label key={uudv4()}>
+                                <input
+                                    checked={sortedUsers.includes(option)}
+                                    value={option}
+                                    type='checkbox'
+                                    onChange={(evt) => filterByAmount(evt.target.value, users)}/>
+                                {option}
                             </label>
                         )
                     })}
                 < /div>
-                {Boolean(filteredUsers.length > 0) && filteredUsers.slice(0, 10).map((user, index) => {
+                {Boolean(currentItems.length > 0) && currentItems.slice(0, PAGE_SIZE).map((user, index) => {
                     let showStatus = false
                     if (openedCard.includes(index)) {
                         showStatus = true;
                     }
-
                     return (
-                        <div key={uudv4()}>
+                        <section className='users__user' key={uudv4()}>
                             <div
-                                key={uudv4()}
-                                className='users__user'
+                                className='users__user-data'
                                 onClick={() => popUpHandler(index)}
                             >
                                 <p className='users__user-information'>{user.id}</p>
@@ -147,7 +176,7 @@ export const Landing = ({pageSize}) => {
                                 <p className='users__user-information'>{user.phone}</p>
                                 <p className='users__user-information'>{user.adress.state}</p>
                             </div>
-                            {showStatus === true && status === true &&
+                            {showStatus === true &&
                             <section className='users__user-pop-up'>Profile info:
                                 <ul>
                                     <li>Selected profile: {user.firstName}</li>
@@ -159,10 +188,21 @@ export const Landing = ({pageSize}) => {
                                 </ul>
                             </section>
                             }
-                        </div>
+                        </section>
                     )
                 })}
             </section>
+            <div className='pagination-controls'>
+                <div className='pagination-buttons'>
+                    <button disabled={page === 1} className='pagination-button'
+                            onClick={handleClickDecrease}>{'Previous page'}</button>
+                    <button disabled={indexOfLastItem === users.length} className='pagination-button'
+                            onClick={handleClickIncrease}>{'Next page'}</button>
+                </div>
+                <div className='pagination-current-page'>
+                    You are on the: {page} page
+                </div>
+            </div>
         </div>
     )
 }
