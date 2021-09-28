@@ -36,7 +36,7 @@ export const Landing = () => {
     }
 
     useEffect(() => {
-        if(currentItems < PAGE_SIZE) {
+        if (currentItems < PAGE_SIZE) {
             setPage(1)
         }
     }, [currentItems])
@@ -52,7 +52,6 @@ export const Landing = () => {
         })
         setFilteredUsers(filteredArray);
     }
-
 
 
     useEffect(() => {
@@ -126,7 +125,7 @@ export const Landing = () => {
     const [data, setData] = useState([])
     const selectHandler = (value, array) => {
 
-        const filtteredArray = array.filter(user =>{
+        const filtteredArray = array.filter(user => {
             return user.adress.state === value
         })
         setFilteredUsers(filtteredArray)
@@ -163,39 +162,36 @@ export const Landing = () => {
                     })}
                 </select>
             </section>
-            <section className='users'>
-                <div className='users__filter-options'>
+            <table className='users'>
+                <thead>
+                <tr className='users__filter-options'>
                     {filterOptions.map(option => {
                         return (
-                            <label key={uudv4()}>
+                            <th key={uudv4()}>
                                 <input
                                     checked={sortedUsers.includes(option)}
                                     value={option}
                                     type='checkbox'
                                     onChange={(evt) => filterByAmount(evt.target.value, filteredUsers)}/>
                                 {option}
-                            </label>
+                            </th>
                         )
                     })}
-                < /div>
+                < /tr>
+                </thead>
                 {Boolean(currentItems.length > 0) && currentItems.map((user, index) => {
                     let showStatus = false
                     if (openedCard.includes(index)) {
                         showStatus = true;
                     }
                     return (
-                        <section className='users__user' key={uudv4()}>
-                            <div
-                                className='users__user-data'
-                                onClick={() => popUpHandler(index)}
-                            >
-                                <p className='users__user-information'>{user.id}</p>
-                                <p className='users__user-information'>{user.firstName}</p>
-                                <p className='users__user-information'>{user.lastName}</p>
-                                <p className='users__user-information'>{user.email}</p>
-                                <p className='users__user-information'>{user.phone}</p>
-                                <p className='users__user-information'>{user.adress.state}</p>
-                            </div>
+                        <tr onClick={() => popUpHandler(index)} className='users__user' key={uudv4()}>
+                            <td className='users__user-information'>{user.id}</td>
+                            <td className='users__user-information'>{user.firstName}</td>
+                            <td className='users__user-information'>{user.lastName}</td>
+                            <td className='users__user-information'>{user.email}</td>
+                            <td className='users__user-information'>{user.phone}</td>
+                            <td className='users__user-information'>{user.adress.state}</td>
                             {showStatus === true &&
                             <section className='users__user-pop-up'>Profile info:
                                 <ul>
@@ -208,23 +204,23 @@ export const Landing = () => {
                                 </ul>
                             </section>
                             }
-                        </section>
+                        </tr>
                     )
                 })}
-            </section>
+            </table>
             <div className='pagination-controls'>
                 <div className='pagination-buttons'>
                     <button disabled={page === 1} className='pagination-button'
                             onClick={handleClickDecrease}>{'Previous page'}</button>
                     {Boolean(arrayWithPageNumbers.length > 0) && arrayWithPageNumbers.map(value => {
                         return (
-                                <button
-                                    key={uudv4()}
-                                    onClick={() => setPage(value)}
-                                    disabled={page === value}
-                                >
-                                    {value}
-                                </button>
+                            <button
+                                key={uudv4()}
+                                onClick={() => setPage(value)}
+                                disabled={page === value}
+                            >
+                                {value}
+                            </button>
                         )
                     })
                     }

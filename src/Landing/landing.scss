@@ -5,8 +5,8 @@
 }
 
 .users {
-  display: flex;
-  flex-direction: column;
+  //display: flex;
+  //flex-direction: column;
   width: 100%;
   position: relative;
 }
@@ -17,10 +17,10 @@
 }
 
 .users__filter-options {
-  display: grid;
-  grid-template-rows: 1fr;
-  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
-  padding: 0;
+  //display: grid;
+  //grid-template-rows: 1fr;
+  //grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+  //padding: 0;
 }
 
 .users__user-data {
@@ -41,8 +41,6 @@
 
 .users__user-information {
   list-style: none;
-  display: flex;
-  flex-direction: column;
   cursor: pointer;
   border: 1px solid black;
   margin: 0;
