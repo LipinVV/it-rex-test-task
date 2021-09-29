@@ -122,9 +122,7 @@ export const Landing = () => {
 
     const states = users.map(user => user.adress.state)
 
-    const [data, setData] = useState([])
     const selectHandler = (value, array) => {
-
         const filtteredArray = array.filter(user => {
             return user.adress.state === value
         })
@@ -148,7 +146,6 @@ export const Landing = () => {
                     />
                 </label>
                 <select
-                    value={data[0]}
                     onChange={(evt) => selectHandler(evt.target.value, users)}
                 >
                     {states.map((user, index) => {
@@ -185,26 +182,27 @@ export const Landing = () => {
                         showStatus = true;
                     }
                     return (
-                        <tr onClick={() => popUpHandler(index)} className='users__user' key={uudv4()}>
+                        <tbody key={uudv4()}>
+                        <tr onClick={() => popUpHandler(index)} className='users__user'>
                             <td className='users__user-information'>{user.id}</td>
                             <td className='users__user-information'>{user.firstName}</td>
                             <td className='users__user-information'>{user.lastName}</td>
                             <td className='users__user-information'>{user.email}</td>
                             <td className='users__user-information'>{user.phone}</td>
                             <td className='users__user-information'>{user.adress.state}</td>
-                            {showStatus === true &&
-                            <section className='users__user-pop-up'>Profile info:
-                                <ul>
-                                    <li>Selected profile: {user.firstName}</li>
-                                    <li>Description: {user.description}</li>
-                                    <li>Address: {user.adress.streetAddress}</li>
-                                    <li>City: {user.adress.city}</li>
-                                    <li>State: {user.adress.state}</li>
-                                    <li>Index: {user.adress.zip}</li>
-                                </ul>
-                            </section>
-                            }
                         </tr>
+                        {showStatus === true &&
+                        <tr className='users__user-pop-up'>
+                            <td>Profile info:</td>
+                            <td>Selected profile: {user.firstName}</td>
+                            <td>Description: {user.description}</td>
+                            <td>Address: {user.adress.streetAddress}</td>
+                            <td>City: {user.adress.city}</td>
+                            <td>State: {user.adress.state}</td>
+                            <td>Index: {user.adress.zip}</td>
+                        </tr>
+                        }
+                        </tbody>
                     )
                 })}
             </table>

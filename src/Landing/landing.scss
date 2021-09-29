@@ -9,6 +9,7 @@
   //flex-direction: column;
   width: 100%;
   position: relative;
+  border-collapse: collapse;
 }
 
 .users__filter {
@@ -43,7 +44,10 @@
   list-style: none;
   cursor: pointer;
   border: 1px solid black;
+  border-left: none;
+  border-right: none;
   margin: 0;
+  padding: 5px;
 }
 
 .users__filter-options {
