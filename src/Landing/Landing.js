@@ -11,9 +11,9 @@ export const Landing = () => {
 
     const getAllData = async () => {
         try {
-            const allWordsFromServer = await fetchCharacters()
-            setUsers(allWordsFromServer)
-            setFilteredUsers(allWordsFromServer)
+            const allWordsFromServer = await fetchCharacters();
+            setUsers(allWordsFromServer);
+            setFilteredUsers(allWordsFromServer);
         } catch (error) {
             console.error(error)
         }
@@ -37,7 +37,7 @@ export const Landing = () => {
 
     useEffect(() => {
         if (currentItems < PAGE_SIZE) {
-            setPage(1)
+            setPage(1);
         }
     }, [currentItems])
 
@@ -98,11 +98,11 @@ export const Landing = () => {
             let sortingArray;
             if (sortedUsers.includes('state')) {
                 sortingArray = array.sort((productA, productB) => {
-                    return productA.adress.state.localeCompare(productB.adress.state)
+                    return productA.adress.state.localeCompare(productB.adress.state);
                 })
             } else {
                 sortingArray = array.sort((productA, productB) => {
-                    return productB.adress.state.localeCompare(productA.adress.state)
+                    return productB.adress.state.localeCompare(productA.adress.state);
                 })
             }
             setFilteredUsers(sortingArray);
@@ -120,18 +120,17 @@ export const Landing = () => {
         })
     }
 
-    const states = users.map(user => user.adress.state)
-
+    const states = users.map(user => user.adress.state);
+    const [selectedUserState, setSelectedState] = useState();
     const selectHandler = (value, array) => {
+        setSelectedState(value);
         const filtteredArray = array.filter(user => {
-            return user.adress.state === value
+            return user.adress.state === value;
         })
-        setFilteredUsers(filtteredArray)
+        setFilteredUsers(filtteredArray);
     }
 
-    console.log('=>', currentItems)
     const numberGenerator = Math.round(filteredUsers.length / 20);
-
     const arrayWithPageNumbers = Array(numberGenerator).fill().map((element, index) => index + 1);
 
     return (
@@ -146,14 +145,15 @@ export const Landing = () => {
                     />
                 </label>
                 <select
+                    value={selectedUserState}
                     onChange={(evt) => selectHandler(evt.target.value, users)}
                 >
-                    {states.map((user, index) => {
+                    {states.map((state, index) => {
                         return (
                             <option
                                 className='users__user'
                                 key={uudv4()}>
-                                {user}
+                                {state}
                             </option>
                         )
                     })}
@@ -177,7 +177,7 @@ export const Landing = () => {
                 < /tr>
                 </thead>
                 {Boolean(currentItems.length > 0) && currentItems.map((user, index) => {
-                    let showStatus = false
+                    let showStatus = false;
                     if (openedCard.includes(index)) {
                         showStatus = true;
                     }
@@ -208,8 +208,10 @@ export const Landing = () => {
             </table>
             <div className='pagination-controls'>
                 <div className='pagination-buttons'>
-                    <button disabled={page === 1} className='pagination-button'
-                            onClick={handleClickDecrease}>{'Previous page'}</button>
+                    <button disabled={page === 1}
+                            className='pagination-button'
+                            onClick={handleClickDecrease}>{'Previous page'}
+                    </button>
                     {Boolean(arrayWithPageNumbers.length > 0) && arrayWithPageNumbers.map(value => {
                         return (
                             <button
@@ -222,8 +224,10 @@ export const Landing = () => {
                         )
                     })
                     }
-                    <button disabled={indexOfLastItem === users.length} className='pagination-button'
-                            onClick={handleClickIncrease}>{'Next page'}</button>
+                    <button
+                        disabled={indexOfLastItem === users.length}
+                        className='pagination-button'
+                        onClick={handleClickIncrease}>{'Next page'}</button>
                 </div>
                 <div className='pagination-current-page'>
                     You are on the: {page} page
