@@ -130,18 +130,18 @@ export const UsersTemplate = () => {
     const generatedArrayOfPageNumbers = Array(numberGenerator).fill().map((element, index) => index + 1);
 
     return (
-        <div className='wrapper'>
-            <section className='users__filter'>
-                <label className='users__filter-label'>
+        <div className='users-template'>
+            <section className='users-template__filter'>
+                <label className='users-template__filter-label'>
                     <input
-                        className='users__filter-input'
+                        className='users-template__filter-input'
                         type='text'
                         placeholder='Search by name...'
                         onChange={evt => inputFilterHandler(evt.target.value, users)}
                     />
                 </label>
                 <select
-                    className='users__states'
+                    className='users-template__states'
                     value={selectedUserCountryState}
                     onChange={evt => selectHandler(evt.target.value, users)}
                 >
@@ -149,7 +149,7 @@ export const UsersTemplate = () => {
                     {usersCountryStates.map(state => {
                         return (
                             <option
-                                className='users__state'
+                                className='users-template__state'
                                 key={uudv4()}>
                                 {state}
                             </option>
@@ -157,16 +157,16 @@ export const UsersTemplate = () => {
                     })}
                 </select>
             </section>
-            <table className='users'>
+            <table className='users-template__template-of-users'>
                 <thead>
-                <tr className='users__filter-options'>
+                <tr className='users-template__filter-options'>
                     {filterOptions.map(option => {
                         return (
                             <th key={uudv4()}>
                                 <label
-                                    className={chosenSortingOptions.includes(option) ? 'users__filter-label' : 'users__filter-label users__filter-label-active'}>
+                                    className={chosenSortingOptions.includes(option) ? 'users-template__filter-label' : 'users-template__filter-label users-template__filter-label-active'}>
                                     <input
-                                        className='users__filter-checkbox'
+                                        className='users-template__filter-checkbox'
                                         checked={chosenSortingOptions.includes(option)}
                                         value={option}
                                         type='checkbox'
@@ -186,55 +186,55 @@ export const UsersTemplate = () => {
                     return (
                         <tbody key={uudv4()}>
                         <tr onClick={() => popUpHandler(index)}
-                            className={!userCardShowStatus ? 'users__user' : 'users__user users__user-active'}>
-                            <td className='users__user-information'>{user.id}</td>
-                            <td className='users__user-information'>{user.firstName}</td>
-                            <td className='users__user-information'>{user.lastName}</td>
-                            <td className='users__user-information'>{user.email}</td>
-                            <td className='users__user-information'>{user.phone}</td>
-                            <td className='users__user-information'>{user.adress.state}</td>
+                            className={!userCardShowStatus ? 'users-template__user' : 'users-template__user users-template__user-active'}>
+                            <td className='users-template__user-information'>{user.id}</td>
+                            <td className='users-template__user-information'>{user.firstName}</td>
+                            <td className='users-template__user-information'>{user.lastName}</td>
+                            <td className='users-template__user-information'>{user.email}</td>
+                            <td className='users-template__user-information'>{user.phone}</td>
+                            <td className='users-template__user-information'>{user.adress.state}</td>
                         </tr>
                         {userCardShowStatus === true &&
-                        <tr className='users__user-pop-up'>
-                            <td className='users__user-pop-up-info'>Profile info:</td>
-                            <td className='users__user-pop-up-info'>Selected profile: {user.firstName}</td>
-                            <td className='users__user-pop-up-info'>Description: {user.description}</td>
-                            <td className='users__user-pop-up-info'>Address: {user.adress.streetAddress}</td>
-                            <td className='users__user-pop-up-info'>City: {user.adress.city}</td>
-                            <td className='users__user-pop-up-info'>State: {user.adress.state}</td>
-                            <td className='users__user-pop-up-info'>Index: {user.adress.zip}</td>
+                        <tr className='users-template__user-pop-up'>
+                            <td className='users-template__pop-up-info'>Profile info:</td>
+                            <td className='users-template__pop-up-info'>Selected profile: {user.firstName}</td>
+                            <td className='users-template__pop-up-info'>Description: {user.description}</td>
+                            <td className='users-template__pop-up-info'>Address: {user.adress.streetAddress}</td>
+                            <td className='users-template__pop-up-info'>City: {user.adress.city}</td>
+                            <td className='users-template__pop-up-info'>State: {user.adress.state}</td>
+                            <td className='users-template__pop-up-info'>Index: {user.adress.zip}</td>
                         </tr>
                         }
                         </tbody>
                     )
                 })}
             </table>
-            <div className='pagination-controls'>
-                <div className='pagination-buttons'>
+            <section className='users-template__pagination-controls'>
+                <div className='users-template__pagination-buttons'>
                     <button disabled={currentPage === 1}
-                            className='pagination-button'
+                            className='users-template__pagination-button'
                             onClick={handleClickDecrease}>Previous
                     </button>
-                    {Boolean(generatedArrayOfPageNumbers.length > 0) && generatedArrayOfPageNumbers.map(value => {
+                    {Boolean(generatedArrayOfPageNumbers.length > 0) && generatedArrayOfPageNumbers.map(number => {
                         return (
                             <button
                                 key={uudv4()}
-                                onClick={() => setCurrentPage(value)}
-                                disabled={currentPage === value}
-                                className='pagination-button'
+                                onClick={() => setCurrentPage(number)}
+                                disabled={currentPage === number}
+                                className='users-template__pagination-button'
                             >
-                                {value}
+                                {number}
                             </button>
                         )
                     })
                     }
                     <button
                         disabled={indexOfLastItem === users.length}
-                        className='pagination-button'
+                        className='users-template__pagination-button'
                         onClick={handleClickIncrease}>Next
                     </button>
                 </div>
-            </div>
+            </section>
         </div>
     )
 }
