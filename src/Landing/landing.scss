@@ -1,8 +1,9 @@
 @import "src/App";
 
 .wrapper {
-  margin: 0 auto;
+  margin: 20px auto 0;
   padding: 20px;
+  background-color: $white;
   @media screen and (min-width: $desktopDevice) {
     max-width: $desktopDevice;
   }
@@ -26,6 +27,14 @@
   &:hover {
     background-color: $golden;
   }
+  &:active {
+    background-color: $blue;
+  }
+}
+
+.users__user-active {
+  background-color: $light-blue;
+  font-weight: 600;
 }
 
 .users__filter {
@@ -54,8 +63,53 @@
 .users__filter-options {
   list-style: none;
   max-width: 1024px;
-  text-align: center;
   font-size: 17px;
+  height: 35px;
+  background-color: $black;
+  color: $white;
+}
+
+.users__filter-label {
+  position: relative;
+  &:after {
+    position: absolute;
+    display: flex;
+    content: "";
+    background-repeat: no-repeat;
+    background-image: url('./img/icon-sort-up.svg');
+    width: 25px;
+    height: 20px;
+    top: -5px;
+    right: -30px;
+  }
+}
+
+.users__filter-label-active {
+  position: relative;
+  &:after {
+    position: absolute;
+    display: flex;
+    content: "";
+    background-repeat: no-repeat;
+    background-image: url('./img/icon-sort-down.svg');
+    width: 25px;
+    height: 20px;
+    top: 5px;
+    right: -30px;
+  }
+}
+
+.users__states {
+  min-width: 80px;
+  height: 30px;
+  text-align: center;
+  cursor: pointer;
+  position: relative;
+  font-weight: 600;
+}
+
+.users__state {
+  font-weight: 600;
 }
 
 .users__user-pop-up {
@@ -63,9 +117,9 @@
   display: flex;
   flex-direction: column;
   position: absolute;
-  bottom: -260px;
-  border: 3px solid $black;
-  background-color: $grey;
+  bottom: -270px;
+  border: 3px solid $blue;
+  background-color: $white;
 }
 
 .users__user-pop-up-info {
@@ -74,11 +128,20 @@
 
 .users__user-pop-up-info:first-of-type {
   font-weight: 600;
+  font-size: 17px;
 }
 
 .users__filter-input {
   padding-left: 20px;
+  min-height: 30px;
   line-height: 20px;
+  font-size: 17px;
+  &::placeholder {
+    color: $black;
+  }
+  &:focus-visible {
+    outline: 2px solid $blue;
+  }
 }
 
 .users__filter-label {
@@ -100,5 +163,32 @@
 .pagination-button {
   cursor: pointer;
   min-height: 30px;
-  min-width: 35px;
+  min-width: 40px;
+  border: 1px solid $black;
+  border-radius: 8px;
+  margin-right: 1px;
+  background-color: $white;
+  font-weight: 600;
+  &:disabled {
+    background-color: $golden;
+    color: $black;
+  }
+  &:hover {
+    background-color: $golden-transparent;
+  }
+  &:disabled:hover {
+    cursor: not-allowed;
+  }
+}
+
+.pagination-button:first-of-type,
+.pagination-button:last-of-type {
+  min-width: 90px;
+  &:disabled {
+    background-color: $grey;
+  }
+}
+
+.pagination-button:last-of-type {
+  margin-right: 0;
 }

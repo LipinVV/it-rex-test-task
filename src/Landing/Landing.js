@@ -53,11 +53,9 @@ export const Landing = () => {
         setFilteredUsers(filteredArray);
     }
 
-
     useEffect(() => {
         getAllData()
     }, [])
-
 
     const [sortedUsers, setSortedUsers] = useState([]);
     const filterByAmount = (value, array) => {
@@ -144,20 +142,23 @@ export const Landing = () => {
                         onChange={evt => inputFilterHandler(evt.target.value, users)}
                     />
                 </label>
-                <select
-                    value={selectedUserState}
-                    onChange={evt => selectHandler(evt.target.value, users)}
-                >
-                    {states.map(state => {
-                        return (
-                            <option
-                                className='users__user'
-                                key={uudv4()}>
-                                {state}
-                            </option>
-                        )
-                    })}
-                </select>
+                <div>
+                    <select
+                        className='users__states'
+                        value={selectedUserState}
+                        onChange={evt => selectHandler(evt.target.value, users)}
+                    >
+                        {states.map(state => {
+                            return (
+                                <option
+                                    className='users__state'
+                                    key={uudv4()}>
+                                    {state}
+                                </option>
+                            )
+                        })}
+                    </select>
+                </div>
             </section>
             <table className='users'>
                 <thead>
@@ -165,7 +166,7 @@ export const Landing = () => {
                     {filterOptions.map(option => {
                         return (
                             <th key={uudv4()}>
-                                <label className='users__filter-label'>
+                                <label className={sortedUsers.includes(option) ? 'users__filter-label' : 'users__filter-label users__filter-label-active'}>
                                     <input
                                         className='users__filter-checkbox'
                                         checked={sortedUsers.includes(option)}
@@ -186,7 +187,7 @@ export const Landing = () => {
                     }
                     return (
                         <tbody key={uudv4()}>
-                        <tr onClick={() => popUpHandler(index)} className='users__user'>
+                        <tr onClick={() => popUpHandler(index)} className={!showStatus ? 'users__user' : 'users__user users__user-active'}>
                             <td className='users__user-information'>{user.id}</td>
                             <td className='users__user-information'>{user.firstName}</td>
                             <td className='users__user-information'>{user.lastName}</td>
@@ -213,7 +214,7 @@ export const Landing = () => {
                 <div className='pagination-buttons'>
                     <button disabled={page === 1}
                             className='pagination-button'
-                            onClick={handleClickDecrease}>{'Previous page'}
+                            onClick={handleClickDecrease}>Previous
                     </button>
                     {Boolean(arrayWithPageNumbers.length > 0) && arrayWithPageNumbers.map(value => {
                         return (
@@ -231,7 +232,7 @@ export const Landing = () => {
                     <button
                         disabled={indexOfLastItem === users.length}
                         className='pagination-button'
-                        onClick={handleClickIncrease}>{'Next page'}</button>
+                        onClick={handleClickIncrease}>Next</button>
                 </div>
             </div>
         </div>
