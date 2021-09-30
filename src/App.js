@@ -1,6 +1,6 @@
 import './App.scss';
 import React from "react";
-import {Landing} from "./Landing/Landing";
+import {UsersTemplate} from "./UsersTemplate/UsersTemplate";
 
 
 export const fetchCharacters = () => {
@@ -17,7 +17,7 @@ export const fetchCharacters = () => {
 function App() {
   return (
     <div className="app">
-        <Landing />
+        <UsersTemplate />
     </div>
   );
 }

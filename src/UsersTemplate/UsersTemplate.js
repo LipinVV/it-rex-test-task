@@ -1,9 +1,9 @@
-import './landing.scss';
+import './usersTemplate.scss';
 import React, {useEffect, useState} from "react";
 import {fetchCharacters} from "../App";
 import {v4 as uudv4} from 'uuid';
 
-export const Landing = () => {
+export const UsersTemplate = () => {
 
     const [users, setUsers] = useState([]);
     const [filteredUsers, setFilteredUsers] = useState([]);
@@ -15,31 +15,29 @@ export const Landing = () => {
             setUsers(allWordsFromServer);
             setFilteredUsers(allWordsFromServer);
         } catch (error) {
-            console.error(error)
+            console.error('Dear client, something went wrong: ', error)
         }
     }
 
-    const [page, setPage] = useState(1);
+    const [currentPage, setCurrentPage] = useState(1);
     const PAGE_SIZE = 20;
 
-    const indexOfLastItem = page * PAGE_SIZE;
+    const indexOfLastItem = currentPage * PAGE_SIZE;
     const indexOfFirstItem = indexOfLastItem - PAGE_SIZE;
-
-    const currentItems = filteredUsers.slice(indexOfFirstItem, indexOfLastItem);
+    const currentUsersOnThePage = filteredUsers.slice(indexOfFirstItem, indexOfLastItem);
 
     function handleClickIncrease() {
-        setPage(prevState => prevState + 1);
+        setCurrentPage(prevState => prevState + 1);
     }
-
     function handleClickDecrease() {
-        setPage(prevState => prevState - 1);
+        setCurrentPage(prevState => prevState - 1);
     }
 
     useEffect(() => {
-        if (currentItems < PAGE_SIZE) {
-            setPage(1);
+        if (currentUsersOnThePage < PAGE_SIZE) {
+            setCurrentPage(1);
         }
-    }, [currentItems])
+    }, [currentUsersOnThePage])
 
     const inputFilterHandler = (inputValue, allUsers) => {
         const filteredArray = allUsers.filter((user) => {
@@ -57,62 +55,59 @@ export const Landing = () => {
         getAllData()
     }, [])
 
-    const [sortedUsers, setSortedUsers] = useState([]);
-    const filterByAmount = (value, array) => {
-        setSortedUsers((prevState) => {
-            if (prevState.includes(value)) {
-                return prevState.filter(element => element !== value);
+    const [chosenSortingOptions, setChosenSortingOptions] = useState([]);
+    const filterByAmount = (sortingOption, array) => {
+        setChosenSortingOptions((prevState) => {
+            if (prevState.includes(sortingOption)) {
+                return prevState.filter(element => element !== sortingOption);
             } else {
-                return [...prevState, value];
+                return [...prevState, sortingOption];
             }
         })
-        if (Boolean(value === 'firstName' || value === 'lastName' || value === 'email' || value === 'phone')) {
-            console.log(value)
-            let sortingArray;
-            if (sortedUsers.includes(value)) {
-                sortingArray = array.sort((productA, productB) => {
-                    return productB[value].localeCompare(productA[value]);
+        if (Boolean(sortingOption === 'firstName' || sortingOption === 'lastName' || sortingOption === 'email' || sortingOption === 'phone')) {
+            let sortedArray;
+            if (chosenSortingOptions.includes(sortingOption)) {
+                sortedArray = array.sort((sortingOptionA, sortingOptionB) => {
+                    return sortingOptionB[sortingOption].localeCompare(sortingOptionA[sortingOption]);
                 })
             } else {
-                sortingArray = array.sort((productA, productB) => {
-                    return productA[value].localeCompare(productB[value]);
+                sortedArray = array.sort((sortingOptionA, sortingOptionB) => {
+                    return sortingOptionA[sortingOption].localeCompare(sortingOptionB[sortingOption]);
                 })
             }
-            setFilteredUsers(sortingArray);
+            setFilteredUsers(sortedArray);
         }
-        if (Boolean(value === 'id')) {
-            console.log(value)
-            let sortingArray;
-            if (sortedUsers.includes('id')) {
-                sortingArray = array.sort((productA, productB) => {
-                    return productB[value] - productA[value];
+        if (Boolean(sortingOption === 'id')) {
+            let sortedArray;
+            if (chosenSortingOptions.includes('id')) {
+                sortedArray = array.sort((sortingOptionA, sortingOptionB) => {
+                    return sortingOptionB[sortingOption] - sortingOptionA[sortingOption];
                 })
             } else {
-                sortingArray = array.sort((productA, productB) => {
-                    return productA[value] - productB[value];
+                sortedArray = array.sort((sortingOptionA, sortingOptionB) => {
+                    return sortingOptionA[sortingOption] - sortingOptionB[sortingOption];
                 })
             }
-            setFilteredUsers(sortingArray);
+            setFilteredUsers(sortedArray);
         }
-        if (Boolean(value === 'state')) {
-            console.log(value)
-            let sortingArray;
-            if (sortedUsers.includes('state')) {
-                sortingArray = array.sort((productA, productB) => {
-                    return productB.adress.state.localeCompare(productA.adress.state);
+        if (Boolean(sortingOption === 'state')) {
+            let sortedArray;
+            if (chosenSortingOptions.includes('state')) {
+                sortedArray = array.sort((sortingOptionA, sortingOptionB) => {
+                    return sortingOptionB.adress.state.localeCompare(sortingOptionA.adress.state);
                 })
             } else {
-                sortingArray = array.sort((productA, productB) => {
-                    return productA.adress.state.localeCompare(productB.adress.state);
+                sortedArray = array.sort((sortingOptionA, sortingOptionB) => {
+                    return sortingOptionA.adress.state.localeCompare(sortingOptionB.adress.state);
                 })
             }
-            setFilteredUsers(sortingArray);
+            setFilteredUsers(sortedArray);
         }
     }
-    console.log(sortedUsers)
-    const [openedCard, setOpenedCard] = useState([]);
+
+    const [userCardToShow, setUserCardToShow] = useState([]);
     const popUpHandler = index => {
-        setOpenedCard((prevState) => {
+        setUserCardToShow((prevState) => {
             if (prevState.includes(index)) {
                 return prevState.filter(value => value !== index);
             } else {
@@ -121,18 +116,18 @@ export const Landing = () => {
         })
     }
 
-    const states = users.map(user => user.adress.state);
-    const [selectedUserState, setSelectedState] = useState('');
+    const usersCountryStates = users.map(user => user.adress.state);
+    const [selectedUserCountryState, setSelectedUserCountryState] = useState('');
     const selectHandler = (value, array) => {
-        setSelectedState(value);
-        const filtteredArray = array.filter(user => {
+        setSelectedUserCountryState(value);
+        const filteredArray = array.filter(user => {
             return user.adress.state === value;
         })
-        setFilteredUsers(filtteredArray);
+        setFilteredUsers(filteredArray);
     }
 
-    const numberGenerator = Math.round(filteredUsers.length / 20);
-    const arrayWithPageNumbers = Array(numberGenerator).fill().map((element, index) => index + 1);
+    const numberGenerator = Math.round(filteredUsers.length / PAGE_SIZE);
+    const generatedArrayOfPageNumbers = Array(numberGenerator).fill().map((element, index) => index + 1);
 
     return (
         <div className='wrapper'>
@@ -147,11 +142,11 @@ export const Landing = () => {
                 </label>
                 <select
                     className='users__states'
-                    value={selectedUserState}
+                    value={selectedUserCountryState}
                     onChange={evt => selectHandler(evt.target.value, users)}
                 >
-                    {selectedUserState === '' && <option>Filter by state</option>}
-                    {states.map(state => {
+                    {selectedUserCountryState === '' && <option>Filter by state</option>}
+                    {usersCountryStates.map(state => {
                         return (
                             <option
                                 className='users__state'
@@ -169,10 +164,10 @@ export const Landing = () => {
                         return (
                             <th key={uudv4()}>
                                 <label
-                                    className={sortedUsers.includes(option) ? 'users__filter-label' : 'users__filter-label users__filter-label-active'}>
+                                    className={chosenSortingOptions.includes(option) ? 'users__filter-label' : 'users__filter-label users__filter-label-active'}>
                                     <input
                                         className='users__filter-checkbox'
-                                        checked={sortedUsers.includes(option)}
+                                        checked={chosenSortingOptions.includes(option)}
                                         value={option}
                                         type='checkbox'
                                         onChange={(evt) => filterByAmount(evt.target.value, filteredUsers)}/>
@@ -183,15 +178,15 @@ export const Landing = () => {
                     })}
                 < /tr>
                 </thead>
-                {Boolean(currentItems.length > 0) && currentItems.map((user, index) => {
-                    let showStatus = false;
-                    if (openedCard.includes(index)) {
-                        showStatus = true;
+                {Boolean(currentUsersOnThePage.length > 0) && currentUsersOnThePage.map((user, index) => {
+                    let userCardShowStatus = false;
+                    if (userCardToShow.includes(index)) {
+                        userCardShowStatus = true;
                     }
                     return (
                         <tbody key={uudv4()}>
                         <tr onClick={() => popUpHandler(index)}
-                            className={!showStatus ? 'users__user' : 'users__user users__user-active'}>
+                            className={!userCardShowStatus ? 'users__user' : 'users__user users__user-active'}>
                             <td className='users__user-information'>{user.id}</td>
                             <td className='users__user-information'>{user.firstName}</td>
                             <td className='users__user-information'>{user.lastName}</td>
@@ -199,7 +194,7 @@ export const Landing = () => {
                             <td className='users__user-information'>{user.phone}</td>
                             <td className='users__user-information'>{user.adress.state}</td>
                         </tr>
-                        {showStatus === true &&
+                        {userCardShowStatus === true &&
                         <tr className='users__user-pop-up'>
                             <td className='users__user-pop-up-info'>Profile info:</td>
                             <td className='users__user-pop-up-info'>Selected profile: {user.firstName}</td>
@@ -216,16 +211,16 @@ export const Landing = () => {
             </table>
             <div className='pagination-controls'>
                 <div className='pagination-buttons'>
-                    <button disabled={page === 1}
+                    <button disabled={currentPage === 1}
                             className='pagination-button'
                             onClick={handleClickDecrease}>Previous
                     </button>
-                    {Boolean(arrayWithPageNumbers.length > 0) && arrayWithPageNumbers.map(value => {
+                    {Boolean(generatedArrayOfPageNumbers.length > 0) && generatedArrayOfPageNumbers.map(value => {
                         return (
                             <button
                                 key={uudv4()}
-                                onClick={() => setPage(value)}
-                                disabled={page === value}
+                                onClick={() => setCurrentPage(value)}
+                                disabled={currentPage === value}
                                 className='pagination-button'
                             >
                                 {value}
