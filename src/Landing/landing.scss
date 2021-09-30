@@ -100,12 +100,16 @@
 }
 
 .users__states {
-  min-width: 80px;
+  min-width: 120px;
   height: 30px;
   text-align: center;
   cursor: pointer;
   position: relative;
   font-weight: 600;
+  &:hover {
+    background-color: $blue;
+    color: $white;
+  }
 }
 
 .users__state {
@@ -165,7 +169,7 @@
   min-height: 30px;
   min-width: 40px;
   border: 1px solid $black;
-  border-radius: 8px;
+  border-radius: 5px;
   margin-right: 1px;
   background-color: $white;
   font-weight: 600;

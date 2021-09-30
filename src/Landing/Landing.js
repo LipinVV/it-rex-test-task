@@ -67,8 +67,9 @@ export const Landing = () => {
             }
         })
         if (Boolean(value === 'firstName' || value === 'lastName' || value === 'email' || value === 'phone')) {
+            console.log(value)
             let sortingArray;
-            if (sortedUsers.includes('firstName') || sortedUsers.includes('lastName') || sortedUsers.includes('email') || sortedUsers.includes('phone')) {
+            if (sortedUsers.includes(value)) {
                 sortingArray = array.sort((productA, productB) => {
                     return productB[value].localeCompare(productA[value]);
                 })
@@ -79,7 +80,8 @@ export const Landing = () => {
             }
             setFilteredUsers(sortingArray);
         }
-        if (Boolean(value === 'id' || value === 'phone')) {
+        if (Boolean(value === 'id')) {
+            console.log(value)
             let sortingArray;
             if (sortedUsers.includes('id')) {
                 sortingArray = array.sort((productA, productB) => {
@@ -93,20 +95,21 @@ export const Landing = () => {
             setFilteredUsers(sortingArray);
         }
         if (Boolean(value === 'state')) {
+            console.log(value)
             let sortingArray;
             if (sortedUsers.includes('state')) {
                 sortingArray = array.sort((productA, productB) => {
-                    return productA.adress.state.localeCompare(productB.adress.state);
+                    return productB.adress.state.localeCompare(productA.adress.state);
                 })
             } else {
                 sortingArray = array.sort((productA, productB) => {
-                    return productB.adress.state.localeCompare(productA.adress.state);
+                    return productA.adress.state.localeCompare(productB.adress.state);
                 })
             }
             setFilteredUsers(sortingArray);
         }
     }
-
+    console.log(sortedUsers)
     const [openedCard, setOpenedCard] = useState([]);
     const popUpHandler = index => {
         setOpenedCard((prevState) => {
@@ -119,7 +122,7 @@ export const Landing = () => {
     }
 
     const states = users.map(user => user.adress.state);
-    const [selectedUserState, setSelectedState] = useState();
+    const [selectedUserState, setSelectedState] = useState('');
     const selectHandler = (value, array) => {
         setSelectedState(value);
         const filtteredArray = array.filter(user => {
@@ -138,27 +141,26 @@ export const Landing = () => {
                     <input
                         className='users__filter-input'
                         type='text'
-                        placeholder='type a name...'
+                        placeholder='Search by name...'
                         onChange={evt => inputFilterHandler(evt.target.value, users)}
                     />
                 </label>
-                <div>
-                    <select
-                        className='users__states'
-                        value={selectedUserState}
-                        onChange={evt => selectHandler(evt.target.value, users)}
-                    >
-                        {states.map(state => {
-                            return (
-                                <option
-                                    className='users__state'
-                                    key={uudv4()}>
-                                    {state}
-                                </option>
-                            )
-                        })}
-                    </select>
-                </div>
+                <select
+                    className='users__states'
+                    value={selectedUserState}
+                    onChange={evt => selectHandler(evt.target.value, users)}
+                >
+                    {selectedUserState === '' && <option>Filter by state</option>}
+                    {states.map(state => {
+                        return (
+                            <option
+                                className='users__state'
+                                key={uudv4()}>
+                                {state}
+                            </option>
+                        )
+                    })}
+                </select>
             </section>
             <table className='users'>
                 <thead>
@@ -166,7 +168,8 @@ export const Landing = () => {
                     {filterOptions.map(option => {
                         return (
                             <th key={uudv4()}>
-                                <label className={sortedUsers.includes(option) ? 'users__filter-label' : 'users__filter-label users__filter-label-active'}>
+                                <label
+                                    className={sortedUsers.includes(option) ? 'users__filter-label' : 'users__filter-label users__filter-label-active'}>
                                     <input
                                         className='users__filter-checkbox'
                                         checked={sortedUsers.includes(option)}
@@ -187,7 +190,8 @@ export const Landing = () => {
                     }
                     return (
                         <tbody key={uudv4()}>
-                        <tr onClick={() => popUpHandler(index)} className={!showStatus ? 'users__user' : 'users__user users__user-active'}>
+                        <tr onClick={() => popUpHandler(index)}
+                            className={!showStatus ? 'users__user' : 'users__user users__user-active'}>
                             <td className='users__user-information'>{user.id}</td>
                             <td className='users__user-information'>{user.firstName}</td>
                             <td className='users__user-information'>{user.lastName}</td>
@@ -232,7 +236,8 @@ export const Landing = () => {
                     <button
                         disabled={indexOfLastItem === users.length}
                         className='pagination-button'
-                        onClick={handleClickIncrease}>Next</button>
+                        onClick={handleClickIncrease}>Next
+                    </button>
                 </div>
             </div>
         </div>
