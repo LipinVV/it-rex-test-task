@@ -117,10 +117,11 @@ export const UsersTemplate = () => {
     }
 
     const usersCountryStates = users.map(user => user.adress.state);
+    const uniqueUsersCountryStates = [...new Set(usersCountryStates)];
     const [selectedUserCountryState, setSelectedUserCountryState] = useState('');
-    const selectHandler = (value, array) => {
+    const selectHandler = (value, users) => {
         setSelectedUserCountryState(value);
-        const filteredArray = array.filter(user => {
+        const filteredArray = users.filter(user => {
             return user.adress.state === value;
         })
         setFilteredUsers(filteredArray);
@@ -141,14 +142,15 @@ export const UsersTemplate = () => {
                     />
                 </label>
                 <select
-                    className='users-template__states'
                     value={selectedUserCountryState}
+                    className='users-template__states'
                     onChange={evt => selectHandler(evt.target.value, users)}
                 >
                     {selectedUserCountryState === '' && <option>Filter by state</option>}
-                    {usersCountryStates.map(state => {
+                    {uniqueUsersCountryStates.map(state => {
                         return (
                             <option
+                                value={state}
                                 className='users-template__state'
                                 key={uudv4()}>
                                 {state}
