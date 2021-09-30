@@ -2,9 +2,11 @@ import './usersTemplate.scss';
 import React, {useEffect, useState} from "react";
 import {fetchCharacters} from "../App";
 import {v4 as uudv4} from 'uuid';
+import {useDispatch} from "react-redux";
+import {getUserData} from "../actions/actions";
 
 export const UsersTemplate = () => {
-
+    const dispatch = useDispatch();
     const [users, setUsers] = useState([]);
     const [filteredUsers, setFilteredUsers] = useState([]);
     const filterOptions = ['id', 'firstName', 'lastName', 'email', 'phone', 'state'];
@@ -111,11 +113,13 @@ export const UsersTemplate = () => {
             if (prevState.includes(index)) {
                 return prevState.filter(value => value !== index);
             } else {
+                let number = [...prevState.slice(0, -1), index]
+                dispatch(getUserData(currentUsersOnThePage[number]))
                 return [...prevState.slice(0, -1), index];
             }
         })
+        dispatch(getUserData(currentUsersOnThePage[index]))
     }
-
     const usersCountryStates = users.map(user => user.adress.state);
     const uniqueUsersCountryStates = [...new Set(usersCountryStates)];
     const [selectedUserCountryState, setSelectedUserCountryState] = useState('');
