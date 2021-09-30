@@ -1,27 +1,36 @@
+@import "src/App";
+
 .wrapper {
-  max-width: 1024px;
   margin: 0 auto;
   padding: 20px;
+  @media screen and (min-width: $desktopDevice) {
+    max-width: $desktopDevice;
+  }
+
+  @media screen and (min-width: $largeDesktopDevice) {
+    max-width: $largeDesktopDevice;
+  }
 }
 
 .users {
-  //display: flex;
-  //flex-direction: column;
   width: 100%;
   position: relative;
   border-collapse: collapse;
+  margin-top: 20px;
+  text-align: center;
+  table-layout: fixed;
+  letter-spacing: 0.3px;
+}
+
+.users__user {
+  &:hover {
+    background-color: $golden;
+  }
 }
 
 .users__filter {
   display: flex;
   justify-content: space-between;
-}
-
-.users__filter-options {
-  //display: grid;
-  //grid-template-rows: 1fr;
-  //grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
-  //padding: 0;
 }
 
 .users__user-data {
@@ -31,14 +40,6 @@
   grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
   max-width: 1024px;
 }
-
-//.users__user-data {
-//  display: flex;
-//  width: 100%;
-//  padding: 0;
-//  justify-content: space-between;
-//  max-width: 1024px;
-//}
 
 .users__user-information {
   list-style: none;
@@ -52,21 +53,52 @@
 
 .users__filter-options {
   list-style: none;
-  //display: flex;
   max-width: 1024px;
-  //justify-content: space-between;
+  text-align: center;
+  font-size: 17px;
 }
 
 .users__user-pop-up {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
   position: absolute;
-  bottom: -200px;
+  bottom: -260px;
+  border: 3px solid $black;
+  background-color: $grey;
+}
+
+.users__user-pop-up-info {
+  padding: 5px;
+}
+
+.users__user-pop-up-info:first-of-type {
+  font-weight: 600;
+}
+
+.users__filter-input {
+  padding-left: 20px;
+  line-height: 20px;
+}
+
+.users__filter-label {
+  cursor: pointer;
+
+}
+
+.users__filter-checkbox {
+  display: none;
 }
 
 .pagination-controls {
+  width: 100%;
   padding-top: 20px;
+  display: flex;
+  justify-content: flex-end;
 }
 
 .pagination-button {
   cursor: pointer;
-  font-size: 10px;
+  min-height: 30px;
+  min-width: 35px;
 }

@@ -72,11 +72,11 @@ export const Landing = () => {
             let sortingArray;
             if (sortedUsers.includes('firstName') || sortedUsers.includes('lastName') || sortedUsers.includes('email') || sortedUsers.includes('phone')) {
                 sortingArray = array.sort((productA, productB) => {
-                    return productA[value].localeCompare(productB[value]);
+                    return productB[value].localeCompare(productA[value]);
                 })
             } else {
                 sortingArray = array.sort((productA, productB) => {
-                    return productB[value].localeCompare(productA[value]);
+                    return productA[value].localeCompare(productB[value]);
                 })
             }
             setFilteredUsers(sortingArray);
@@ -85,11 +85,11 @@ export const Landing = () => {
             let sortingArray;
             if (sortedUsers.includes('id')) {
                 sortingArray = array.sort((productA, productB) => {
-                    return productA[value] - productB[value];
+                    return productB[value] - productA[value];
                 })
             } else {
                 sortingArray = array.sort((productA, productB) => {
-                    return productB[value] - productA[value];
+                    return productA[value] - productB[value];
                 })
             }
             setFilteredUsers(sortingArray);
@@ -141,14 +141,14 @@ export const Landing = () => {
                         className='users__filter-input'
                         type='text'
                         placeholder='type a name...'
-                        onChange={(evt) => inputFilterHandler(evt.target.value, users)}
+                        onChange={evt => inputFilterHandler(evt.target.value, users)}
                     />
                 </label>
                 <select
                     value={selectedUserState}
-                    onChange={(evt) => selectHandler(evt.target.value, users)}
+                    onChange={evt => selectHandler(evt.target.value, users)}
                 >
-                    {states.map((state, index) => {
+                    {states.map(state => {
                         return (
                             <option
                                 className='users__user'
@@ -165,12 +165,15 @@ export const Landing = () => {
                     {filterOptions.map(option => {
                         return (
                             <th key={uudv4()}>
-                                <input
-                                    checked={sortedUsers.includes(option)}
-                                    value={option}
-                                    type='checkbox'
-                                    onChange={(evt) => filterByAmount(evt.target.value, filteredUsers)}/>
-                                {option}
+                                <label className='users__filter-label'>
+                                    <input
+                                        className='users__filter-checkbox'
+                                        checked={sortedUsers.includes(option)}
+                                        value={option}
+                                        type='checkbox'
+                                        onChange={(evt) => filterByAmount(evt.target.value, filteredUsers)}/>
+                                    {option}
+                                </label>
                             </th>
                         )
                     })}
@@ -193,13 +196,13 @@ export const Landing = () => {
                         </tr>
                         {showStatus === true &&
                         <tr className='users__user-pop-up'>
-                            <td>Profile info:</td>
-                            <td>Selected profile: {user.firstName}</td>
-                            <td>Description: {user.description}</td>
-                            <td>Address: {user.adress.streetAddress}</td>
-                            <td>City: {user.adress.city}</td>
-                            <td>State: {user.adress.state}</td>
-                            <td>Index: {user.adress.zip}</td>
+                            <td className='users__user-pop-up-info'>Profile info:</td>
+                            <td className='users__user-pop-up-info'>Selected profile: {user.firstName}</td>
+                            <td className='users__user-pop-up-info'>Description: {user.description}</td>
+                            <td className='users__user-pop-up-info'>Address: {user.adress.streetAddress}</td>
+                            <td className='users__user-pop-up-info'>City: {user.adress.city}</td>
+                            <td className='users__user-pop-up-info'>State: {user.adress.state}</td>
+                            <td className='users__user-pop-up-info'>Index: {user.adress.zip}</td>
                         </tr>
                         }
                         </tbody>
@@ -218,6 +221,7 @@ export const Landing = () => {
                                 key={uudv4()}
                                 onClick={() => setPage(value)}
                                 disabled={page === value}
+                                className='pagination-button'
                             >
                                 {value}
                             </button>
@@ -228,9 +232,6 @@ export const Landing = () => {
                         disabled={indexOfLastItem === users.length}
                         className='pagination-button'
                         onClick={handleClickIncrease}>{'Next page'}</button>
-                </div>
-                <div className='pagination-current-page'>
-                    You are on the: {page} page
                 </div>
             </div>
         </div>
