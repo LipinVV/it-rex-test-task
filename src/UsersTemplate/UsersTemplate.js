@@ -28,10 +28,10 @@ export const UsersTemplate = () => {
     const indexOfFirstItem = indexOfLastItem - PAGE_SIZE;
     const currentUsersOnThePage = filteredUsers.slice(indexOfFirstItem, indexOfLastItem);
 
-    function handleClickIncrease() {
+    const handleClickIncrease = () => {
         setCurrentPage(prevState => prevState + 1);
     }
-    function handleClickDecrease() {
+    const handleClickDecrease = () => {
         setCurrentPage(prevState => prevState - 1);
     }
 
