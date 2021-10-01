@@ -42,7 +42,7 @@ export const UsersTemplate = () => {
     }, [currentUsersOnThePage])
 
     const inputFilterHandler = (inputValue, allUsers) => {
-        const filteredArray = allUsers.filter((user) => {
+        const filteredArray = allUsers.filter(user => {
             if (inputValue === '') {
                 return user;
             }
@@ -164,7 +164,7 @@ export const UsersTemplate = () => {
                 </select>
             </section>
             <table className='users-template__template-of-users'>
-                <thead>
+                <thead className='users-template__header-of-template'>
                 <tr className='users-template__filter-options'>
                     {filterOptions.map(option => {
                         return (
@@ -190,7 +190,7 @@ export const UsersTemplate = () => {
                         userCardShowStatus = true;
                     }
                     return (
-                        <tbody key={uudv4()}>
+                        <tbody className='users-template__body-of-template' key={uudv4()}>
                         <tr onClick={() => popUpHandler(index)}
                             className={!userCardShowStatus ? 'users-template__user' : 'users-template__user users-template__user-active'}>
                             <td className='users-template__user-information'>{user.id}</td>

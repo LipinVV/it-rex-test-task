@@ -10,6 +10,7 @@
 
   @media screen and (min-width: $largeDesktopDevice) {
     max-width: $largeDesktopDevice;
+    font-size: 17px;
   }
 }
 
@@ -120,6 +121,10 @@
   bottom: -270px;
   border: 3px solid $blue;
   background-color: $white;
+
+  @media screen and (min-width: $largeDesktopDevice) {
+    bottom: -290px;
+  }
 }
 
 .users-template__pop-up-info {
@@ -166,6 +171,11 @@
   margin-right: 1px;
   background-color: $white;
   font-weight: 600;
+
+  @media screen and (min-width: $largeDesktopDevice) {
+    min-height: 35px;
+    min-width: 45px;
+  }
 
   &:disabled {
     background-color: $golden;
